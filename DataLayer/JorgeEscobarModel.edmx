@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="JAEscobarLibrosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Editorial">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="ISN" />
+          </Key>
+          <Property Name="ISN" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Total_Paginas" Type="int" Nullable="false" />
+          <Property Name="Fecha_Publicacion" Type="date" Nullable="false" />
+          <Property Name="IdEditorial" Type="int" Nullable="false" />
+          <Property Name="IdAutor" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Autor">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Editorial">
+          <End Role="Editorial" Type="Self.Editorial" Multiplicity="1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editorial">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="BorrarLibroEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+        </Function>
+        <Function Name="BorrarLibroPorAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultaPorAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultaPorAutorFecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+          <Parameter Name="IdAutor" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ConsultaPorEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Editorial" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ConsultaPorFecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+        </Function>
+        <Function Name="ConsultaPorTitulo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CrearLibro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ISN" Type="varchar" Mode="In" />
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+          <Parameter Name="Paginas" Type="int" Mode="In" />
+          <Parameter Name="Fecha_Publicacion" Type="date" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="JAEscobarLibrosModelStoreContainer">
+          <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Editorial" EntityType="Self.Editorial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Libro" EntityType="Self.Libro" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Autor" Association="Self.FK_Autor">
+            <End Role="Autor" EntitySet="Autor" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Editorial" Association="Self.FK_Editorial">
+            <End Role="Editorial" EntitySet="Editorial" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JAEscobarLibrosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Libroes" Relationship="Self.FK_Autor" FromRole="Autor" ToRole="Libro" />
+        </EntityType>
+        <EntityType Name="Editorial">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Libroes" Relationship="Self.FK_Editorial" FromRole="Editorial" ToRole="Libro" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="ISN" />
+          </Key>
+          <Property Name="ISN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Titulo" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Total_Paginas" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_Publicacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdEditorial" Type="Int32" Nullable="false" />
+          <Property Name="IdAutor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Autor" Relationship="Self.FK_Autor" FromRole="Libro" ToRole="Autor" />
+          <NavigationProperty Name="Editorial" Relationship="Self.FK_Editorial" FromRole="Libro" ToRole="Editorial" />
+        </EntityType>
+        <Association Name="FK_Autor">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Editorial">
+          <End Role="Editorial" Type="Self.Editorial" Multiplicity="1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editorial">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JAEscobarLibrosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Autors" EntityType="Self.Autor" />
+          <EntitySet Name="Editorials" EntityType="Self.Editorial" />
+          <EntitySet Name="Libroes" EntityType="Self.Libro" />
+          <AssociationSet Name="FK_Autor" Association="Self.FK_Autor">
+            <End Role="Autor" EntitySet="Autors" />
+            <End Role="Libro" EntitySet="Libroes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Editorial" Association="Self.FK_Editorial">
+            <End Role="Editorial" EntitySet="Editorials" />
+            <End Role="Libro" EntitySet="Libroes" />
+          </AssociationSet>
+          <FunctionImport Name="BorrarLibroEditorial">
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="BorrarLibroPorAutor">
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultaPorAutor" ReturnType="Collection(JAEscobarLibrosModel.ConsultaPorAutor_Result)">
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultaPorAutorFecha" ReturnType="Collection(JAEscobarLibrosModel.ConsultaPorAutorFecha_Result)">
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="IdAutor" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultaPorEditorial" ReturnType="Collection(JAEscobarLibrosModel.ConsultaPorEditorial_Result)">
+            <Parameter Name="Editorial" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultaPorFecha" ReturnType="Collection(JAEscobarLibrosModel.ConsultaPorFecha_Result)">
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultaPorTitulo" ReturnType="Collection(JAEscobarLibrosModel.ConsultaPorTitulo_Result)">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CrearLibro">
+            <Parameter Name="ISN" Mode="In" Type="String" />
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="Paginas" Mode="In" Type="Int32" />
+            <Parameter Name="Fecha_Publicacion" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="ConsultaPorAutor_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="Total_Paginas" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ConsultaPorAutorFecha_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Autor" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="Editorial" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ConsultaPorEditorial_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="Total_Paginas" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Autor" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="Editorial" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ConsultaPorFecha_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="Total_Paginas" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Autor" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ConsultaPorTitulo_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="Total_Paginas" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Expr1" Nullable="false" MaxLength="60" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JAEscobarLibrosModelStoreContainer" CdmEntityContainer="JAEscobarLibrosEntities">
+          <EntitySetMapping Name="Autors">
+            <EntityTypeMapping TypeName="JAEscobarLibrosModel.Autor">
+              <MappingFragment StoreEntitySet="Autor">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editorials">
+            <EntityTypeMapping TypeName="JAEscobarLibrosModel.Editorial">
+              <MappingFragment StoreEntitySet="Editorial">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libroes">
+            <EntityTypeMapping TypeName="JAEscobarLibrosModel.Libro">
+              <MappingFragment StoreEntitySet="Libro">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="BorrarLibroEditorial" FunctionName="JAEscobarLibrosModel.Store.BorrarLibroEditorial" />
+          <FunctionImportMapping FunctionImportName="BorrarLibroPorAutor" FunctionName="JAEscobarLibrosModel.Store.BorrarLibroPorAutor" />
+          <FunctionImportMapping FunctionImportName="ConsultaPorAutor" FunctionName="JAEscobarLibrosModel.Store.ConsultaPorAutor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ConsultaPorAutor_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultaPorAutorFecha" FunctionName="JAEscobarLibrosModel.Store.ConsultaPorAutorFecha">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ConsultaPorAutorFecha_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultaPorEditorial" FunctionName="JAEscobarLibrosModel.Store.ConsultaPorEditorial">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ConsultaPorEditorial_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultaPorFecha" FunctionName="JAEscobarLibrosModel.Store.ConsultaPorFecha">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ConsultaPorFecha_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultaPorTitulo" FunctionName="JAEscobarLibrosModel.Store.ConsultaPorTitulo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ConsultaPorTitulo_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CrearLibro" FunctionName="JAEscobarLibrosModel.Store.CrearLibro" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
