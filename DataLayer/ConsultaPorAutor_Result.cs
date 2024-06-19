@@ -19,5 +19,7 @@ namespace DataLayer
         public System.DateTime Fecha_Publicacion { get; set; }
         public int IdAutor { get; set; }
         public string Nombre { get; set; }
+        public int IdEditorial { get; set; }
+        public string Editorial { get; set; }
     }
 }

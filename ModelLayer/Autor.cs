@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ModelLayer
 {
-    public class Class1
+    public class Autor
     {
+        public int IdAutor { get; set; }
+        public string Nombre { get; set; }
+        public List<Autor> Autores { get; set; }
     }
 }
