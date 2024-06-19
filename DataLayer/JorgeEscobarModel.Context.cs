@@ -49,15 +49,6 @@ namespace DataLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("BorrarLibroPorAutor", idAutorParameter);
         }
     
-        public virtual ObjectResult<ConsultaPorAutor_Result> ConsultaPorAutor(Nullable<int> idAutor)
-        {
-            var idAutorParameter = idAutor.HasValue ?
-                new ObjectParameter("IdAutor", idAutor) :
-                new ObjectParameter("IdAutor", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorAutor_Result>("ConsultaPorAutor", idAutorParameter);
-        }
-    
         public virtual ObjectResult<ConsultaPorAutorFecha_Result> ConsultaPorAutorFecha(Nullable<System.DateTime> fecha, string idAutor)
         {
             var fechaParameter = fecha.HasValue ?
@@ -89,15 +80,6 @@ namespace DataLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorFecha_Result>("ConsultaPorFecha", fechaParameter);
         }
     
-        public virtual ObjectResult<ConsultaPorTitulo_Result> ConsultaPorTitulo(string titulo)
-        {
-            var tituloParameter = titulo != null ?
-                new ObjectParameter("Titulo", titulo) :
-                new ObjectParameter("Titulo", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorTitulo_Result>("ConsultaPorTitulo", tituloParameter);
-        }
-    
         public virtual int CrearLibro(string iSN, string titulo, Nullable<int> paginas, Nullable<System.DateTime> fecha_Publicacion, Nullable<int> idEditorial, Nullable<int> idAutor)
         {
             var iSNParameter = iSN != null ?
@@ -125,6 +107,24 @@ namespace DataLayer
                 new ObjectParameter("IdAutor", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CrearLibro", iSNParameter, tituloParameter, paginasParameter, fecha_PublicacionParameter, idEditorialParameter, idAutorParameter);
+        }
+    
+        public virtual ObjectResult<ConsultaPorAutor_Result> ConsultaPorAutor(Nullable<int> idAutor)
+        {
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorAutor_Result>("ConsultaPorAutor", idAutorParameter);
+        }
+    
+        public virtual ObjectResult<ConsultaPorTitulo_Result> ConsultaPorTitulo(string titulo)
+        {
+            var tituloParameter = titulo != null ?
+                new ObjectParameter("Titulo", titulo) :
+                new ObjectParameter("Titulo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorTitulo_Result>("ConsultaPorTitulo", tituloParameter);
         }
     }
 }

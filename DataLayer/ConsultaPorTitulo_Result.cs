@@ -20,6 +20,6 @@ namespace DataLayer
         public string Nombre { get; set; }
         public int IdEditorial { get; set; }
         public int IdAutor { get; set; }
-        public string Expr1 { get; set; }
+        public string Autor { get; set; }
     }
 }
