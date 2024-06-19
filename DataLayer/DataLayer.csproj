@@ -56,6 +56,9 @@
     <Compile Include="Autor.cs">
       <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ConsultaPorAutorEditorial_Result.cs">
+      <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ConsultaPorAutorFecha_Result.cs">
       <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
     </Compile>

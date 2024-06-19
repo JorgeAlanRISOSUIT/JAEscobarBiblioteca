@@ -170,16 +170,112 @@ namespace BusinessLayer
                                 },
                                 Editorial = new ModelLayer.Editorial
                                 {
-                                    IdEditorial 
+                                    IdEditorial = item.IdEditorial,
+                                    Nombre = item.Editorial
                                 }
-                            }
+                            };
                         }
+                        return (true, "", null, model);
+                    }
+                    else
+                    {
+                        return (false, "No se puede encontrar el resultado", null, null);
                     }
                 }
             }
             catch (Exception ex)
             {
                 return (false, ex.Message, ex, null);
+            }
+        }
+
+        public static (bool, string, Exception, ModelLayer.Libro) GetByAutorEditorial(int idAutor, int idEditorial)
+        {
+            try
+            {
+                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    var result = context.ConsultaPorAutorEditorial(idAutor, idEditorial).ToList();
+                    if(result.Count > 0)
+                    {
+                        foreach (DataLayer.ConsultaPorAutorEditorial_Result item in result)
+                        {
+                            ModelLayer.Libro objLibro = new ModelLayer.Libro
+                            {
+                                ISN = item.ISN,
+                                Titulo = item.Titulo,
+                                Fecha_Publicacion = item.Fecha_Publicacion,
+                                Total_Paginas = item.Total_Paginas,
+                                Autor = new ModelLayer.Autor
+                                {
+                                    IdAutor = item.IdAutor,
+                                    Nombre = item.Autor
+                                },
+                                Editorial = new ModelLayer.Editorial
+                                {
+                                    IdEditorial = item.IdEditorial,
+                                    Nombre = item.Editorial
+                                }
+                            };
+                        }
+                        return (true, "", null, model);
+                    }
+                    else
+                    {
+                        return (false, "No existen libros a mostrar", null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex, null);
+            }
+        }
+
+        public static (bool, string, Exception) BorrarLibroPorAutor(int idAutor)
+        {
+            try
+            {
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    var result = context.BorrarLibroPorAutor(idAutor);
+                    if(result > 0)
+                    {
+                        return (true, "Se ha eliminado el libro a referencia del autor", null);
+                    }
+                    else
+                    {
+                        return (false, "No se puede eliminar este libro", null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex);
+            }
+        }
+
+        public static (bool, string, Exception) BorrarLibroPorEditorial(int idEditorial)
+        {
+            try
+            {
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    int result = context.BorrarLibroEditorial(idEditorial);
+                    if(result > 0)
+                    {
+                        return (true, "Se a elimnado el libro por la editorial", null);
+                    }
+                    else
+                    {
+                        return (false, "No se pudo eliminar por editorial", null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, null);
             }
         }
     }
