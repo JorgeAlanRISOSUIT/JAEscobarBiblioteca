@@ -126,5 +126,18 @@ namespace DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorTitulo_Result>("ConsultaPorTitulo", tituloParameter);
         }
+    
+        public virtual ObjectResult<ConsultaPorAutorEditorial_Result> ConsultaPorAutorEditorial(Nullable<int> idAutor, Nullable<int> idEditorial)
+        {
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorAutorEditorial_Result>("ConsultaPorAutorEditorial", idAutorParameter, idEditorialParameter);
+        }
     }
 }
