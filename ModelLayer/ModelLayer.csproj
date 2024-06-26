@@ -44,7 +44,9 @@
     <Compile Include="Autor.cs" />
     <Compile Include="Editorial.cs" />
     <Compile Include="Libro.cs" />
+    <Compile Include="PaginationDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
