@@ -10,16 +10,18 @@ namespace BusinessLayer
 {
     public class Libro
     {
-        public static (bool, string, Exception, ModelLayer.Libro) GetByIdAutor(int idAutor)
+        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByIdAutor(int idAutor, int pagina, int seccion)
         {
             try
             {
-                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
+                ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorAutor(idAutor).ToList();
                     if (result.Count > 0)
                     {
+                        pagination.CantidadElementos = result.Count;
+                        pagination.SeleccionElementos = seccion;
                         foreach (var info in result)
                         {
                             ModelLayer.Libro libro = new ModelLayer.Libro
@@ -39,13 +41,13 @@ namespace BusinessLayer
                                     Nombre = info.Editorial,
                                 }
                             };
-                            model.Libros.Add(libro);
+                            pagination.Libros.Add(libro);
                         }
-                        return (true, "", null, model);
+                        return (true, "", null, pagination);
                     }
                     else
                     {
-                        return (false, "No hay disponibilidad en este momento", null, model);
+                        return (false, "No hay disponibilidad en este momento", null, null);
                     }
                 }
             }
@@ -108,7 +110,7 @@ namespace BusinessLayer
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorFecha(date).ToList();
-                    if(result.Count > 0)
+                    if (result.Count > 0)
                     {
                         foreach (DataLayer.ConsultaPorFecha_Result item in result)
                         {
@@ -145,16 +147,18 @@ namespace BusinessLayer
             }
         }
 
-        public static (bool, string, Exception, ModelLayer.Libro) GetByEditorial(string nombre)
+        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByEditorial(string nombre, int seccion, int pagina)
         {
             try
             {
-                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
+                ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorEditorial(nombre).ToList();
-                    if(result.Count > 0)
+                    if (result.Count > 0)
                     {
+                        pagination.CantidadElementos = result.Count;
+                        pagination.SeleccionElementos = seccion;
                         foreach (DataLayer.ConsultaPorEditorial_Result item in result)
                         {
                             ModelLayer.Libro objLibro = new ModelLayer.Libro
@@ -174,8 +178,9 @@ namespace BusinessLayer
                                     Nombre = item.Editorial
                                 }
                             };
+                            pagination.Libros.Add(objLibro);
                         }
-                        return (true, "", null, model);
+                        return (true, "", null, pagination);
                     }
                     else
                     {
@@ -197,7 +202,7 @@ namespace BusinessLayer
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorAutorEditorial(idAutor, idEditorial).ToList();
-                    if(result.Count > 0)
+                    if (result.Count > 0)
                     {
                         foreach (DataLayer.ConsultaPorAutorEditorial_Result item in result)
                         {
@@ -240,7 +245,7 @@ namespace BusinessLayer
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.BorrarLibroPorAutor(idAutor);
-                    if(result > 0)
+                    if (result > 0)
                     {
                         return (true, "Se ha eliminado el libro a referencia del autor", null);
                     }
@@ -263,7 +268,7 @@ namespace BusinessLayer
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     int result = context.BorrarLibroEditorial(idEditorial);
-                    if(result > 0)
+                    if (result > 0)
                     {
                         return (true, "Se a elimnado el libro por la editorial", null);
                     }
@@ -276,6 +281,55 @@ namespace BusinessLayer
             catch (Exception ex)
             {
                 return (false, ex.Message, null);
+            }
+        }
+
+        public static (bool, string, Exception, ModelLayer.Libro) AcomodarLibro(int pagina, int seccion)
+        {
+            try
+            {
+                ModelLayer.Libro libro = new ModelLayer.Libro() { Libros = new List<ModelLayer.Libro>() };
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    var result = context.ObtenerLibros().ToList();
+                    if (result.Count > 0)
+                    {
+                        ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
+                        pagination.CantidadElementos = result.Count;
+                        pagination.SeleccionElementos = seccion;
+                        foreach (var item in result)
+                        {
+                            ModelLayer.Libro objLibro = new ModelLayer.Libro
+                            {
+                                ISN = item.ISN,
+                                Titulo = item.Titulo,
+                                Fecha_Publicacion = item.Fecha_Publicacion,
+                                Total_Paginas = item.Total_Paginas,
+                                Autor = new ModelLayer.Autor
+                                {
+                                    IdAutor = item.IdAutor,
+                                    Nombre = item.Autor
+                                },
+                                Editorial = new ModelLayer.Editorial
+                                {
+                                    IdEditorial = item.IdEditorial,
+                                    Nombre = item.Editorial
+                                }
+                            };
+                            pagination.Libros.Add(objLibro);
+                        }
+                        libro.Libros = pagination.TempLibros.ElementAt(pagina - 1 < 0 ? 0 : pagina - 1);
+                        return (true, "", null, libro);
+                    }
+                    else
+                    {
+                        return (false, "", null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex, null);
             }
         }
     }

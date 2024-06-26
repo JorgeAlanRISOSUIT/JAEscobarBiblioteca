@@ -139,5 +139,10 @@ namespace DataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultaPorAutorEditorial_Result>("ConsultaPorAutorEditorial", idAutorParameter, idEditorialParameter);
         }
+    
+        public virtual ObjectResult<ObtenerLibros_Result> ObtenerLibros()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerLibros_Result>("ObtenerLibros");
+        }
     }
 }
