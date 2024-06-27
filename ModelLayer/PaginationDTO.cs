@@ -46,7 +46,7 @@ namespace ModelLayer
                         for (int i = (SeleccionElementos - 1); i < CantidadElementos; i += SeleccionElementos)
                         {
                             List<Libro> temp2 = new List<Libro>();
-                            for (int j = i - (SeleccionElementos - 1); j <= i; j++)
+                            for (int j = i - SeleccionElementos; j <= i; j++)
                             {
                                 temp2.Add(Libros[j]);
                                 if (j == (i))
@@ -61,7 +61,7 @@ namespace ModelLayer
                         for (int i = (CantidadElementos - 1); i < CantidadElementos; i++)
                         {
                             List<Libro> temp2 = new List<Libro>();
-                            for (int j = i - (CantidadElementos - 1) ; j <= i; j++)
+                            for (int j = i - CantidadElementos ; j <= i; j++)
                             {
                                 temp2.Add(Libros[j]);
                                 if(j == (i))
