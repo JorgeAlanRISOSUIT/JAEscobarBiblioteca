@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +16,7 @@ namespace LibroAPI.Controllers
     {
         [HttpGet]
         [Route("Autor/{idAutor}")]
-        public HttpResponseMessage ObtenerPorAutor(int idAutor, [QueryString]int pagina, [QueryString]int seccion)
+        public HttpResponseMessage ObtenerPorAutor(int idAutor, [QueryString] int pagina, [QueryString] int seccion)
         {
             ModelLayer.ResultDTO resultDTO = new ModelLayer.ResultDTO();
             var result = BusinessLayer.Libro.GetByIdAutor(idAutor, pagina, seccion);
@@ -24,10 +25,10 @@ namespace LibroAPI.Controllers
                 resultDTO.Success = true;
                 resultDTO.Message = string.Empty;
                 resultDTO.Paginations = new List<List<object>>();
-                foreach(var item in result.Item4.TempLibros)
+                foreach (var item in result.Item4.TempLibros)
                 {
                     List<object> listaTemp = new List<object>();
-                    foreach(var item2 in item)
+                    foreach (var item2 in item)
                     {
                         listaTemp.Add(item2);
                     }
@@ -43,7 +44,7 @@ namespace LibroAPI.Controllers
 
         [HttpGet]
         [Route("Editorial/{nombre}")]
-        public HttpResponseMessage ObtenerPorEditorial(string nombre, [QueryString]int seccion, [QueryString]int pagina)
+        public HttpResponseMessage ObtenerPorEditorial(string nombre, [QueryString] int seccion, [QueryString] int pagina)
         {
             ModelLayer.ResultDTO resultDTO = new ModelLayer.ResultDTO();
             var result = BusinessLayer.Libro.GetByEditorial(nombre, seccion, pagina);
@@ -52,10 +53,10 @@ namespace LibroAPI.Controllers
                 resultDTO.Success = true;
                 resultDTO.Message = string.Empty;
                 resultDTO.Paginations = new List<List<object>>();
-                foreach(var item in result.Item4.TempLibros)
+                foreach (var item in result.Item4.TempLibros)
                 {
                     List<object> nombres = new List<object>();
-                    foreach(var item2 in item)
+                    foreach (var item2 in item)
                     {
                         nombres.Add(item2);
                     }
@@ -70,6 +71,12 @@ namespace LibroAPI.Controllers
                 resultDTO.Error = result.Item3;
                 return Request.CreateResponse(HttpStatusCode.BadRequest, resultDTO);
             }
+        }
+
+        [HttpGet]
+        [Route("Editorial/{fecha}")]
+        public HttpResponseMessage ObtenerPorAutorFecha(string fecha, [QueryString] string idAutor, [QueryString] int elemento)
+        {
         }
     }
 }

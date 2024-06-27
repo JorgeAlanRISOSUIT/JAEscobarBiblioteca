@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,10 +11,11 @@ namespace BusinessLayer
 {
     public class Libro
     {
-        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByIdAutor(int idAutor, int pagina, int seccion)
+        public static (bool, string, Exception, ModelLayer.Libro) GetByIdAutor(int idAutor, int pagina, int seccion)
         {
             try
             {
+                ModelLayer.Libro model = new ModelLayer.Libro();
                 ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
@@ -43,7 +45,8 @@ namespace BusinessLayer
                             };
                             pagination.Libros.Add(libro);
                         }
-                        return (true, "", null, pagination);
+                        model.Libros = pagination.TempLibros[pagina - 1 <= 0 ? 0 : pagina - 1];
+                        return (true, "", null, model);
                     }
                     else
                     {
@@ -57,16 +60,19 @@ namespace BusinessLayer
             }
         }
 
-        public static (bool, string, Exception, ModelLayer.Libro) GetByTitulo(string titulo)
+        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByTitulo(string titulo, int pagina, int seccion)
         {
             try
             {
                 ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
+                ModelLayer.PaginationDTO paginationDTO = new ModelLayer.PaginationDTO();
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorTitulo(titulo).ToList();
                     if (result.Count > 0)
                     {
+                        paginationDTO.CantidadElementos = result.Count;
+                        paginationDTO.SeleccionElementos = seccion;
                         foreach (var item in result)
                         {
                             ModelLayer.Libro objLibro = new ModelLayer.Libro
@@ -86,9 +92,9 @@ namespace BusinessLayer
                                     Nombre = item.Nombre
                                 }
                             };
-                            model.Libros.Add(objLibro);
+                            paginationDTO.Libros.Add(objLibro);
                         }
-                        return (true, "", null, model);
+                        return (true, "", null, paginationDTO);
                     }
                     else
                     {
@@ -330,6 +336,27 @@ namespace BusinessLayer
             catch (Exception ex)
             {
                 return (false, ex.Message, ex, null);
+            }
+        }
+
+        public static (bool, string, Exception, DateTime) ConversionFecha(string fecha)
+        {
+            try
+            {
+                DateTime conversion = new DateTime();
+                if (DateTime.TryParse(fecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out conversion))
+                {
+                    return (true, "", null, Convert.ToDateTime(conversion.ToString("yyyy/MM/dd")));
+                }
+                else
+                {
+                    return (false, "", null, new DateTime(0, 0, 0));
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex, new DateTime(0, 0, 0));
+                throw;
             }
         }
     }
