@@ -11,41 +11,38 @@ namespace BusinessLayer
 {
     public class Libro
     {
-        public static (bool, string, Exception, ModelLayer.Libro) GetByIdAutor(int idAutor, int pagina, int seccion)
+        public static (bool, string, Exception, ModelLayer.Libro) GetByIdAutor(int idAutor)
         {
             try
             {
-                ModelLayer.Libro model = new ModelLayer.Libro();
-                ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
+                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorAutor(idAutor).ToList();
                     if (result.Count > 0)
                     {
-                        pagination.CantidadElementos = result.Count;
-                        pagination.SeleccionElementos = seccion;
-                        foreach (var info in result)
+                        foreach (var item in result)
                         {
-                            ModelLayer.Libro libro = new ModelLayer.Libro
+                            ModelLayer.Libro objLibro = new ModelLayer.Libro
                             {
-                                ISN = info.ISN,
-                                Titulo = info.Titulo,
-                                Fecha_Publicacion = info.Fecha_Publicacion,
-                                Total_Paginas = info.Total_Paginas,
-                                Autor = new ModelLayer.Autor
-                                {
-                                    IdAutor = info.IdAutor,
-                                    Nombre = info.Nombre,
-                                },
+                                ISN = item.ISN,
+                                Titulo = item.Titulo,
+                                Fecha_Publicacion = item.Fecha_Publicacion,
+                                Total_Paginas = item.Total_Paginas,
                                 Editorial = new ModelLayer.Editorial
                                 {
-                                    IdEditorial = info.IdEditorial,
-                                    Nombre = info.Editorial,
+                                    IdEditorial = item.IdEditorial,
+                                    Nombre = item.Editorial
+                                },
+                                Autor = new ModelLayer.Autor
+                                {
+                                    IdAutor = item.IdAutor,
+                                    Nombre = item.Nombre
                                 }
                             };
-                            pagination.Libros.Add(libro);
+                            model.Libros.Add(objLibro);
                         }
-                        model.Libros = pagination.TempLibros[pagina - 1 <= 0 ? 0 : pagina - 1];
+
                         return (true, "", null, model);
                     }
                     else
@@ -60,19 +57,16 @@ namespace BusinessLayer
             }
         }
 
-        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByTitulo(string titulo, int pagina, int seccion)
+        public static (bool, string, Exception, ModelLayer.Libro) GetByTitulo(string titulo)
         {
             try
             {
                 ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
-                ModelLayer.PaginationDTO paginationDTO = new ModelLayer.PaginationDTO();
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorTitulo(titulo).ToList();
                     if (result.Count > 0)
                     {
-                        paginationDTO.CantidadElementos = result.Count;
-                        paginationDTO.SeleccionElementos = seccion;
                         foreach (var item in result)
                         {
                             ModelLayer.Libro objLibro = new ModelLayer.Libro
@@ -92,9 +86,9 @@ namespace BusinessLayer
                                     Nombre = item.Nombre
                                 }
                             };
-                            paginationDTO.Libros.Add(objLibro);
+                            model.Libros.Add(objLibro);
                         }
-                        return (true, "", null, paginationDTO);
+                        return (true, "", null, model);
                     }
                     else
                     {
@@ -153,18 +147,16 @@ namespace BusinessLayer
             }
         }
 
-        public static (bool, string, Exception, ModelLayer.PaginationDTO) GetByEditorial(string nombre, int seccion, int pagina)
+        public static (bool, string, Exception, ModelLayer.Libro) GetByEditorial(string nombre)
         {
             try
             {
-                ModelLayer.PaginationDTO pagination = new ModelLayer.PaginationDTO();
+                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
                 using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
                 {
                     var result = context.ConsultaPorEditorial(nombre).ToList();
                     if (result.Count > 0)
                     {
-                        pagination.CantidadElementos = result.Count;
-                        pagination.SeleccionElementos = seccion;
                         foreach (DataLayer.ConsultaPorEditorial_Result item in result)
                         {
                             ModelLayer.Libro objLibro = new ModelLayer.Libro
@@ -184,9 +176,9 @@ namespace BusinessLayer
                                     Nombre = item.Editorial
                                 }
                             };
-                            pagination.Libros.Add(objLibro);
+                            model.Libros.Add(objLibro);
                         }
-                        return (true, "", null, pagination);
+                        return (true, "", null, model);
                     }
                     else
                     {

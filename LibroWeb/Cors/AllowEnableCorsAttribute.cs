@@ -14,6 +14,7 @@ namespace LibroWeb.Cors
         {
             filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "https://localhost:44367/");
             filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Request-Method", "*");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Request-Headers", "*");
         }
     }
 }
