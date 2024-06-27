@@ -1,33 +1,50 @@
-﻿@{
+﻿@model ModelLayer.ResultDTO
+@{
     ViewBag.Title = "Home Page";
 }
+@if (Model.Success)
+{
+    <h1 class="text-center">Bienvenidos a la tienda de Libros</h1>
+    <div class="my-2 row">
+        <div class="col-12">
+            <div class="table-responsive table-responsive-lg">
+                <table class="table table-primary">
+                    <thead>
+                        <tr>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Numero de Paginas</th>
+                            <th scope="col">Fecha de publicacion</th>
+                            <th scope="col">Autor</th>
+                            <th scope="col">Editorial</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (object item in Model.Objects)
+                        {
+                            var result = item as ModelLayer.Libro;
+                            <tr>
+                                <td class="bg-white">@result.ISN</td>
+                                <td class="bg-white">@result.Titulo</td>
+                                <td class="bg-white">@result.Total_Paginas</td>
+                                <td class="bg-white">@result.Fecha_Publicacion</td>
+                                <td class="bg-white">@result.Autor.Nombre</td>
+                                <td class="bg-white">@result.Editorial.Nombre</td>
+                                <td class="bg-white">
+                                    <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                                        <button class="col btn btn-info">Editar</button>
+                                        <button class="col btn btn-danger">Actualizar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col">
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+        </div>
     </div>
-</main>
+}
