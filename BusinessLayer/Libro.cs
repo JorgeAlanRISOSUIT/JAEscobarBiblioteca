@@ -11,6 +11,51 @@ namespace BusinessLayer
 {
     public class Libro
     {
+        public static (bool, string, Exception, ModelLayer.Libro) GetAllLibros()
+        {
+            try
+            {
+                ModelLayer.Libro model = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    var result = context.ObtenerTodos().ToList();
+                    if (result.Count > 0)
+                    {
+                        foreach (var item in result)
+                        {
+                            ModelLayer.Libro objLibro = new ModelLayer.Libro
+                            {
+                                ISN = item.ISN,
+                                Titulo = item.Titulo,
+                                Total_Paginas = item.Total_Paginas,
+                                Fecha_Publicacion = item.Fecha_Publicacion,
+                                Editorial = new ModelLayer.Editorial
+                                {
+                                    IdEditorial = item.IdEditorial,
+                                    Nombre = item.Editorial
+                                },
+                                Autor = new ModelLayer.Autor
+                                {
+                                    IdAutor = item.IdAutor,
+                                    Nombre = item.Autor
+                                }
+                            };
+                            model.Libros.Add(objLibro);
+                        }
+                        return (true, "", null, model);
+                    }
+                    else
+                    {
+                        return (false, "No existen leyes de datos", null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex, null);
+            }
+        }
+
         public static (bool, string, Exception, ModelLayer.Libro) GetByIdAutor(int idAutor)
         {
             try

@@ -11,14 +11,14 @@ using System.Web.Mvc;
 
 namespace LibroWeb.Controllers
 {
-
+    [AllowEnableCors]
     public class HomeController : Controller
     {
         public async Task<ActionResult> Index()
         {
             using (HttpClient cliente = new HttpClient())
             {
-                var result = await cliente.GetAsync("https://localhost:44367/Autor/3");
+                var result = await cliente.GetAsync("https://localhost:44367/Libros");
                 if (result.IsSuccessStatusCode)
                 {
                     var body = await result.Content.ReadAsStringAsync();
