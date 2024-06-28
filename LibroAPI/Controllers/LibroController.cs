@@ -15,6 +15,31 @@ namespace LibroAPI.Controllers
     public class LibroController : ApiController
     {
         [HttpGet]
+        [Route("Libros")]
+        public HttpResponseMessage ObtenerTodos()
+        {
+            ModelLayer.ResultDTO resultDTO = new ModelLayer.ResultDTO();
+            var result = BusinessLayer.Libro.GetAllLibros();
+            if (result.Item1)
+            {
+                resultDTO.Success = true;
+                resultDTO.Objects = new List<object>();
+                foreach (var item in result.Item4.Libros)
+                {
+                    resultDTO.Objects.Add(item);
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, resultDTO);
+            }
+            else
+            {
+                resultDTO.Success = false;
+                resultDTO.Message = result.Item2;
+                resultDTO.Error = result.Item3;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, resultDTO);
+            }
+        }
+
+        [HttpGet]
         [Route("Autor/{idAutor}")]
         public HttpResponseMessage ObtenerPorAutor(int idAutor)
         {

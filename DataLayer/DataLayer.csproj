@@ -98,6 +98,9 @@
     <Compile Include="ObtenerLibros_Result.cs">
       <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ObtenerTodos_Result.cs">
+      <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

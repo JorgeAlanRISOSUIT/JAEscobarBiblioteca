@@ -144,5 +144,10 @@ namespace DataLayer
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerLibros_Result>("ObtenerLibros");
         }
+    
+        public virtual ObjectResult<ObtenerTodos_Result> ObtenerTodos()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerTodos_Result>("ObtenerTodos");
+        }
     }
 }

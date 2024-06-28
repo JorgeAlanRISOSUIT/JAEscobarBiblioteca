@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
-@if (Model.Success)
+@if (Model.Success && Model.Objects.Count > 0)
 {
     <h1 class="text-center">Bienvenidos a la tienda de Libros</h1>
     <div class="my-2 row">
@@ -28,13 +28,13 @@
                                 <td class="bg-white">@result.ISN</td>
                                 <td class="bg-white">@result.Titulo</td>
                                 <td class="bg-white">@result.Total_Paginas</td>
-                                <td class="bg-white">@result.Fecha_Publicacion</td>
+                                <td class="bg-white">@result.Fecha_Publicacion.ToString("yyyy/MM/dd")</td>
                                 <td class="bg-white">@result.Autor.Nombre</td>
                                 <td class="bg-white">@result.Editorial.Nombre</td>
                                 <td class="bg-white">
                                     <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-                                        <button class="col btn btn-info">Editar</button>
-                                        <button class="col btn btn-danger">Actualizar</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-info">Editar</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-danger">Eliminar</button>
                                     </div>
                                 </td>
                             </tr>
@@ -44,7 +44,114 @@
             </div>
         </div>
         <div class="col">
-
+            @Html.DropDownList("SeleccionElemento", new List<SelectListItem> {
+           new SelectListItem { Value = "1", Text = "5"},
+           new SelectListItem { Value = "2", Text = "10"},
+           new SelectListItem { Value = "3", Text = "15"},
+           new SelectListItem { Value = "4", Text = "20"}
+       }, "Seleccione una opcion", new { @class = "form-control" })
+        </div>
+        <div class="col">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    @for (int i = 0; i < Math.Floor((decimal)Model.Objects.Count / 5); i++)
+                    {
+                        <li class="page-item"><a class="page-link" href="#">@(i+1)</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        <div class="col">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ingresar nueva Informacion</button>
         </div>
     </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "w-100 d-flex justify-content-center align-items-center flex-column" }))
+                        {
+                            <div class="card col-12 mb-3 w-100" style="width: 18rem;">
+                                <div class="card-body w-100">
+                                    <h5 class="card-title">Comienze a rellenar el libro</h5>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Agregar nuevo libro</h6>
+                                    <div class="container overflow-hidden text-center">
+                                        <div class="row g-3">
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <label class="">ISBN</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <label class="">Titulo</label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-floating">
+                                                    <input type="date" class="form-control-sm form-control" placeholder="" />
+                                                    <label class="">Fecha Publicacion</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <label>No. Páginas</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card w-100 col-12 mb-3" style="width: 18rem">
+                                <div class="card-body">
+                                    <h5 class="card-title">Comienze a rellenar el autor</h5>
+                                    <div class="container overflow-hidden text-center">
+                                        <div class="row g-3 justify-content-center align-items-center">
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <label>Autor</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card w-100 col-12 mb-3" style="width: 18rem">
+                                <div class="card-body">
+                                    <h5 class="card-title">Comienze a rellenar el editorial</h5>
+                                    <div class="container overflow-hidden text-center">
+                                        <div class="row g-3 justify-content-center align-items-center">
+                                            <div class="col-auto">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <label>Editorial</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success" id="Ingresar">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
 }
