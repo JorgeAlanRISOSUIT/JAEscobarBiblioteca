@@ -95,7 +95,16 @@
     <Compile Include="Libro.cs">
       <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ObtenerAutores_Result.cs">
+      <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ObtenerEditoriales_Result.cs">
+      <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ObtenerLibros_Result.cs">
+      <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ObtenerLibro_Result.cs">
       <DependentUpon>JorgeEscobarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ObtenerTodos_Result.cs">

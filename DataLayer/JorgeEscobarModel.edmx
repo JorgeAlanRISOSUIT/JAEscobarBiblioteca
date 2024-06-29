@@ -54,6 +54,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ActualizarLibro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ISN" Type="varchar" Mode="In" />
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+          <Parameter Name="Total_Paginas" Type="int" Mode="In" />
+          <Parameter Name="Fecha_Publicacion" Type="date" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
         <Function Name="BorrarLibroEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdEditorial" Type="int" Mode="In" />
         </Function>
@@ -87,6 +95,11 @@
           <Parameter Name="Fecha_Publicacion" Type="date" Mode="In" />
           <Parameter Name="IdEditorial" Type="int" Mode="In" />
           <Parameter Name="IdAutor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ObtenerAutores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ObtenerEditoriales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ObtenerLibro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ISN" Type="varchar" Mode="In" />
         </Function>
         <Function Name="ObtenerLibros" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="ObtenerTodos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -208,6 +221,19 @@
           </FunctionImport>
           <FunctionImport Name="ObtenerLibros" ReturnType="Collection(JAEscobarLibrosModel.ObtenerLibros_Result)" />
           <FunctionImport Name="ObtenerTodos" ReturnType="Collection(JAEscobarLibrosModel.ObtenerTodos_Result)" />
+          <FunctionImport Name="ActualizarLibro">
+            <Parameter Name="ISN" Mode="In" Type="String" />
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="Total_Paginas" Mode="In" Type="Int32" />
+            <Parameter Name="Fecha_Publicacion" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ObtenerLibro" ReturnType="Collection(JAEscobarLibrosModel.ObtenerLibro_Result)">
+          <Parameter Name="ISN" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ObtenerAutores" ReturnType="Collection(JAEscobarLibrosModel.ObtenerAutores_Result)" />
+          <FunctionImport Name="ObtenerEditoriales" ReturnType="Collection(JAEscobarLibrosModel.ObtenerEditoriales_Result)" />
         </EntityContainer>
         <ComplexType Name="ConsultaPorAutorFecha_Result">
           <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
@@ -287,6 +313,24 @@
           <Property Type="String" Name="Editorial" Nullable="false" MaxLength="60" />
           <Property Type="Int32" Name="IdAutor" Nullable="false" />
           <Property Type="String" Name="Autor" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ObtenerLibro_Result">
+          <Property Type="String" Name="ISN" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="Total_Paginas" Nullable="false" />
+          <Property Type="DateTime" Name="Fecha_Publicacion" Nullable="false" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="Editorial" Nullable="false" MaxLength="60" />
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Autor" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ObtenerAutores_Result">
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="60" />
+        </ComplexType>
+        <ComplexType Name="ObtenerEditoriales_Result">
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="60" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -433,6 +477,37 @@
                 <ScalarProperty Name="Editorial" ColumnName="Editorial" />
                 <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
                 <ScalarProperty Name="Autor" ColumnName="Autor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ActualizarLibro" FunctionName="JAEscobarLibrosModel.Store.ActualizarLibro" />
+          <FunctionImportMapping FunctionImportName="ObtenerLibro" FunctionName="JAEscobarLibrosModel.Store.ObtenerLibro">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ObtenerLibro_Result">
+                <ScalarProperty Name="ISN" ColumnName="ISN" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Total_Paginas" ColumnName="Total_Paginas" />
+                <ScalarProperty Name="Fecha_Publicacion" ColumnName="Fecha_Publicacion" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ObtenerAutores" FunctionName="JAEscobarLibrosModel.Store.ObtenerAutores">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ObtenerAutores_Result">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ObtenerEditoriales" FunctionName="JAEscobarLibrosModel.Store.ObtenerEditoriales">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JAEscobarLibrosModel.ObtenerEditoriales_Result">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

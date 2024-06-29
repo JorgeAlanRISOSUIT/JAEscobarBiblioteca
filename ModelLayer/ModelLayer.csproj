@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autor.cs" />
+    <Compile Include="CommunicationDTO.cs" />
     <Compile Include="Editorial.cs" />
     <Compile Include="Libro.cs" />
     <Compile Include="PaginationDTO.cs" />

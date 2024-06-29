@@ -396,5 +396,91 @@ namespace BusinessLayer
                 throw;
             }
         }
+
+        public static (bool, string, Exception) UpdateLibro(ModelLayer.Libro libro)
+        {
+            try
+            {
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    int result = context.ActualizarLibro(libro.ISN, libro.Titulo, libro.Total_Paginas, libro.Fecha_Publicacion, libro.Editorial.IdEditorial, libro.Autor.IdAutor);
+                    if (result > 0)
+                    {
+                        return (true, "Se ha actualizado el libro", null);
+                    }
+                    else
+                    {
+                        return (false, "No se encuentra en la lista", null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex);
+            }
+        }
+
+        public static (bool, string, Exception, ModelLayer.Libro) ObtenerLibro(string ISBN)
+        {
+            try
+            {
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    DataLayer.ObtenerLibro_Result result =  context.ObtenerLibro(ISBN).SingleOrDefault();
+                    if(result != null)
+                    {
+                        ModelLayer.Libro objLibro = new ModelLayer.Libro
+                        {
+                            ISN = result.ISN,
+                            Titulo = result.Titulo,
+                            Fecha_Publicacion = result.Fecha_Publicacion,
+                            Total_Paginas = result.Total_Paginas,
+                            Editorial = new ModelLayer.Editorial
+                            {
+                                IdEditorial = result.IdEditorial,
+                                Nombre = result.Editorial
+                            },
+                            Autor = new ModelLayer.Autor
+                            {
+                                IdAutor = result.IdAutor,
+                                Nombre = result.Autor,
+                            }
+                        };
+                        return (true, "", null, objLibro);
+                    }
+                    else
+                    {
+                        return (false, "No existe este libro en el catalogo", null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex, null);
+            }
+        }
+
+        public static (bool, string, Exception) AddLibro(ModelLayer.Libro libro)
+        {
+            try
+            {
+                using (DataLayer.JAEscobarLibrosEntities context = new DataLayer.JAEscobarLibrosEntities())
+                {
+                    int result = context.CrearLibro(libro.ISN, libro.Titulo, libro.Total_Paginas, libro.Fecha_Publicacion, libro.Editorial.IdEditorial, libro.Autor.IdAutor);
+                    if(result > 0)
+                    {
+                        return (true, "Se ha agregado el libro al catalogo", null);
+                    }
+                    else
+                    {
+                        return (false, "No se ha agregado el libro al catalogo", null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, ex);
+            }
+        }
     }
 }
