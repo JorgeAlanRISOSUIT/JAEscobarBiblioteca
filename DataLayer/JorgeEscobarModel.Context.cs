@@ -149,5 +149,53 @@ namespace DataLayer
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerTodos_Result>("ObtenerTodos");
         }
+    
+        public virtual int ActualizarLibro(string iSN, string titulo, Nullable<int> total_Paginas, Nullable<System.DateTime> fecha_Publicacion, Nullable<int> idEditorial, Nullable<int> idAutor)
+        {
+            var iSNParameter = iSN != null ?
+                new ObjectParameter("ISN", iSN) :
+                new ObjectParameter("ISN", typeof(string));
+    
+            var tituloParameter = titulo != null ?
+                new ObjectParameter("Titulo", titulo) :
+                new ObjectParameter("Titulo", typeof(string));
+    
+            var total_PaginasParameter = total_Paginas.HasValue ?
+                new ObjectParameter("Total_Paginas", total_Paginas) :
+                new ObjectParameter("Total_Paginas", typeof(int));
+    
+            var fecha_PublicacionParameter = fecha_Publicacion.HasValue ?
+                new ObjectParameter("Fecha_Publicacion", fecha_Publicacion) :
+                new ObjectParameter("Fecha_Publicacion", typeof(System.DateTime));
+    
+            var idEditorialParameter = idEditorial.HasValue ?
+                new ObjectParameter("IdEditorial", idEditorial) :
+                new ObjectParameter("IdEditorial", typeof(int));
+    
+            var idAutorParameter = idAutor.HasValue ?
+                new ObjectParameter("IdAutor", idAutor) :
+                new ObjectParameter("IdAutor", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ActualizarLibro", iSNParameter, tituloParameter, total_PaginasParameter, fecha_PublicacionParameter, idEditorialParameter, idAutorParameter);
+        }
+    
+        public virtual ObjectResult<ObtenerLibro_Result> ObtenerLibro(string iSN)
+        {
+            var iSNParameter = iSN != null ?
+                new ObjectParameter("ISN", iSN) :
+                new ObjectParameter("ISN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerLibro_Result>("ObtenerLibro", iSNParameter);
+        }
+    
+        public virtual ObjectResult<ObtenerAutores_Result> ObtenerAutores()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerAutores_Result>("ObtenerAutores");
+        }
+    
+        public virtual ObjectResult<ObtenerEditoriales_Result> ObtenerEditoriales()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ObtenerEditoriales_Result>("ObtenerEditoriales");
+        }
     }
 }

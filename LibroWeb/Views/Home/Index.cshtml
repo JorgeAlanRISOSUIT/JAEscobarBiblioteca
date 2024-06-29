@@ -20,7 +20,7 @@
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tabla-contenido">
                         @foreach (object item in Model.Objects)
                         {
                             var result = item as ModelLayer.Libro;
@@ -33,8 +33,8 @@
                                 <td class="bg-white">@result.Editorial.Nombre</td>
                                 <td class="bg-white">
                                     <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-info">Editar</button>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-danger">Eliminar</button>
+                                        <button type="button" id="Actualizar" data-libro="@result.ISN" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-info">Editar</button>
+                                        <button type="button" id="Eliminar" data-libro="@result.ISN" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-danger">Eliminar</button>
                                     </div>
                                 </td>
                             </tr>
@@ -62,7 +62,7 @@
             </nav>
         </div>
         <div class="col">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ingresar nueva Informacion</button>
+            <button id="agregar-libro" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ingresar nueva Informacion</button>
         </div>
     </div>
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static">
@@ -72,7 +72,7 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="modal-body">
                     <div class="container-fluid">
                         @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "w-100 d-flex justify-content-center align-items-center flex-column" }))
                         {
@@ -84,25 +84,25 @@
                                         <div class="row g-3">
                                             <div class="col-auto">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="text" id="ISBN" class="form-control-sm form-control" placeholder="" />
                                                     <label class="">ISBN</label>
                                                 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="text" id="Titulo" class="form-control-sm form-control" placeholder="" />
                                                     <label class="">Titulo</label>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="form-floating">
-                                                    <input type="date" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="date" id="Fecha" class="form-control-sm form-control" placeholder="" />
                                                     <label class="">Fecha Publicacion</label>
                                                 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="text" id="Total_Paginas" class="form-control-sm form-control" placeholder="" />
                                                     <label>No. Páginas</label>
                                                 </div>
                                             </div>
@@ -117,7 +117,7 @@
                                         <div class="row g-3 justify-content-center align-items-center">
                                             <div class="col-auto">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="text" id="Autor" class="form-control-sm form-control" placeholder="" />
                                                     <label>Autor</label>
                                                 </div>
                                             </div>
@@ -132,7 +132,7 @@
                                         <div class="row g-3 justify-content-center align-items-center">
                                             <div class="col-auto">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control-sm form-control" placeholder="" />
+                                                    <input type="text" id="Editorial" class="form-control-sm form-control" placeholder="" />
                                                     <label>Editorial</label>
                                                 </div>
                                             </div>
@@ -143,9 +143,10 @@
                         }
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" id="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success" id="Ingresar">Ingresar</button>
+                    <button type="submit" class="btn btn-success" id="IngresarModal">Ingresar</button>
+                    <button type="submit" class="btn btn-info" id="ActualizarModal">Actualizar</button>
                 </div>
             </div>
         </div>

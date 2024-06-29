@@ -31,7 +31,6 @@ namespace LibroWeb
                 "~/JQuery/models.js"));
             bundles.Add(new ScriptBundle("~/function/validation").Include(
                 "~/JQuery/info.js"));
-            BundleTable.EnableOptimizations = true;
         }
     }
 }

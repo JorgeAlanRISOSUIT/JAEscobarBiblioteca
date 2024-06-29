@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -105,7 +106,7 @@ namespace LibroAPI.Controllers
                     resultDTO.Success = true;
                     resultDTO.Message = string.Empty;
                     resultDTO.Objects = new List<object>();
-                    foreach(var item in resultGet.Item4.Libros)
+                    foreach (var item in resultGet.Item4.Libros)
                     {
                         resultDTO.Objects.Add(item);
                     }
@@ -139,7 +140,7 @@ namespace LibroAPI.Controllers
                 resultDTO.Success = true;
                 resultDTO.Message = string.Empty;
                 resultDTO.Objects = new List<object>();
-                foreach(var item in result.Item4.Libros)
+                foreach (var item in result.Item4.Libros)
                 {
                     resultDTO.Objects.Add(item);
                 }
@@ -219,6 +220,74 @@ namespace LibroAPI.Controllers
                 resultDTO.Message = result.Item2;
                 resultDTO.Error = result.Item3;
                 return Request.CreateResponse(HttpStatusCode.BadRequest, resultDTO);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateLibro")]
+        public HttpResponseMessage ActualizarLibro([FromBody] ModelLayer.Libro libro)
+        {
+            ModelLayer.ResultDTO modelDTO = new ModelLayer.ResultDTO();
+            var result = BusinessLayer.Libro.UpdateLibro(libro);
+            if (result.Item1)
+            {
+                modelDTO.Success = true;
+                modelDTO.Message = result.Item2;
+                modelDTO.Objects = new List<object>();
+                foreach (var item in modelDTO.Objects)
+                {
+                    modelDTO.Objects.Add(item);
+                }
+                return Request.CreateResponse(HttpStatusCode.Accepted, modelDTO);
+            }
+            else
+            {
+                modelDTO.Success = false;
+                modelDTO.Message = result.Item2;
+                modelDTO.Error = result.Item3;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, modelDTO);
+            }
+        }
+
+        [HttpGet]
+        [Route("Libro/{ISBN}")]
+        public HttpResponseMessage ObtenerLibro(string ISBN)
+        {
+            ModelLayer.ResultDTO resultDTO = new ModelLayer.ResultDTO();
+            var result = BusinessLayer.Libro.ObtenerLibro(ISBN);
+            if (result.Item1)
+            {
+                resultDTO.Success = true;
+                resultDTO.Object = result.Item4;
+                return Request.CreateResponse(HttpStatusCode.OK, resultDTO);
+            }
+            else
+            {
+                resultDTO.Success = false;
+                resultDTO.Message = result.Item2;
+                resultDTO.Error = result.Item3;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, resultDTO);
+            }
+        }
+
+        [HttpPost]
+        [Route("Libro/Agregar")]
+        public HttpResponseMessage AgregarLibro(ModelLayer.Libro libro)
+        {
+            ModelLayer.ResultDTO modelDTO = new ModelLayer.ResultDTO();
+            var result = BusinessLayer.Libro.AddLibro(libro);
+            if (result.Item1)
+            {
+                modelDTO.Success = true;
+                modelDTO.Message = result.Item2;
+                return Request.CreateResponse(HttpStatusCode.OK, modelDTO);
+            }
+            else
+            {
+                modelDTO.Success = false;
+                modelDTO.Message = result.Item2;
+                modelDTO.Error = result.Item3;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, modelDTO);
             }
         }
     }
