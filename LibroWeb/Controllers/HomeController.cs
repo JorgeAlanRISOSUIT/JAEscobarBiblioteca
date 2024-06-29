@@ -46,7 +46,7 @@ namespace LibroWeb.Controllers
 
         public JsonResult ObtenerLibro(string ISBN)
         {
-            return Json(getInformation(ISBN).Object, JsonRequestBehavior.AllowGet);
+            return Json(getInformation(ISBN), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CargarLibros()
