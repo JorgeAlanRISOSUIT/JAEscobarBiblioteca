@@ -54,6 +54,7 @@
     <Compile Include="Autor.cs" />
     <Compile Include="Libro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Editorial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
