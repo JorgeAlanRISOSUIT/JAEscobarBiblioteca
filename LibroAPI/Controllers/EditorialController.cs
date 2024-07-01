@@ -10,30 +10,30 @@ namespace LibroAPI.Controllers
 {
 	[EnableCors("https://localhost:44348/", "*", "*")]
 	public class EditorialController : ApiController
-	{
-		[HttpGet]
-		[Route("Editoriales")]
-		public HttpResponseMessage ObtenerEditoriales()
-		{
-			ModelLayer.ResultDTO resultDTO = new ModelLayer.ResultDTO();
-			var result = BusinessLayer.Editorial.GetEditoriales();
-			if (result.Item1)
-			{
-				resultDTO.Success = true;
-				resultDTO.Objects = new List<object>();
-				foreach (ModelLayer.Editorial item in result.Item4.Editoriales)
-				{
-					resultDTO.Objects.Add(item);
-				}
-				return Request.CreateResponse(HttpStatusCode.OK, resultDTO);
-			}
-			else
-			{
-				resultDTO.Success = false;
-				resultDTO.Message = result.Item2;
-				resultDTO.Error = result.Item3;
-				return Request.CreateResponse(HttpStatusCode.BadRequest, resultDTO);
-			}
-		}
-	}
+    {
+        [HttpGet]
+        [Route("Editoriales")]
+        public HttpResponseMessage ObtenerEditoriales()
+        {
+            ModelLayer.ResultDTO modelDTO = new ModelLayer.ResultDTO();
+            var result = BusinessLayer.Editorial.GetEditoriales();
+            if (result.Item1)
+            {
+                modelDTO.Success = true;
+                modelDTO.Objects = new List<object>();
+                foreach (ModelLayer.Editorial item in result.Item4.Editoriales)
+                {
+                    modelDTO.Objects.Add(item);
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, modelDTO);
+            }
+            else
+            {
+                modelDTO.Success = false;
+                modelDTO.Message = result.Item2;
+                modelDTO.Error = result.Item3;
+                return Request.CreateResponse(HttpStatusCode.BadRequest, modelDTO);
+            }
+        }
+    }
 }

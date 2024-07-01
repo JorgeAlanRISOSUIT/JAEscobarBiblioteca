@@ -78,11 +78,11 @@ namespace LibroWeb.Controllers
 		private ModelLayer.Libro GetLibros(string ISBN)
 		{
 			ModelLayer.Libro libro = new ModelLayer.Libro { Libros = new List<ModelLayer.Libro>() };
-			if (string.IsNullOrEmpty(ISBN))
+			if (!string.IsNullOrEmpty(ISBN))
 			{
 				using (HttpClient cliente = new HttpClient())
 				{
-					HttpResponseMessage mensaje = cliente.GetAsync(ConfigurationManager.AppSettings["LibrosApi"]).GetAwaiter().GetResult();
+					HttpResponseMessage mensaje = cliente.GetAsync($"{ConfigurationManager.AppSettings["ObtenerLibro"]}/{ISBN}").GetAwaiter().GetResult();
 					if (mensaje.IsSuccessStatusCode)
 					{
 						string body = mensaje.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -100,7 +100,7 @@ namespace LibroWeb.Controllers
 			{
 				using (HttpClient cliente = new HttpClient())
 				{
-					HttpResponseMessage mensaje = cliente.GetAsync($"{ConfigurationManager.AppSettings["ObtenerLibro"]}/{ISBN}").GetAwaiter().GetResult();
+					HttpResponseMessage mensaje = cliente.GetAsync($"{ConfigurationManager.AppSettings["LibrosApi"]}").GetAwaiter().GetResult();
 					if (mensaje.IsSuccessStatusCode)
 					{
 						string body = mensaje.Content.ReadAsStringAsync().GetAwaiter().GetResult();

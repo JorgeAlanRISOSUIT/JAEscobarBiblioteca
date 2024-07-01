@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
-@if (Model.Success && Model.Objects.Count > 0)
+@if (Model.Success && (Model.Object as ModelLayer.PaginationDTO).CantidadElementos > 0)
 {
     <h1 class="text-center">Bienvenidos a la tienda de Libros</h1>
     <div class="my-2 row">
@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-contenido">
-                        @foreach (object item in Model.Objects)
+                        @foreach (ModelLayer.Libro item in (Model.Object as ModelLayer.PaginationDTO).TempLibros[0])
                         {
                             var result = item as ModelLayer.Libro;
                             <tr>
@@ -54,7 +54,7 @@
         <div class="col">
             <nav aria-label="...">
                 <ul class="pagination">
-                    @for (int i = 0; i < Math.Floor((decimal)Model.Objects.Count / 5); i++)
+                    @for (int i = 0; i < (Model.Object as ModelLayer.PaginationDTO).CantidadTempPaginas; i++)
                     {
                         <li class="page-item"><a class="page-link" href="#">@(i+1)</a></li>
                     }
