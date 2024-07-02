@@ -2,13 +2,13 @@
 @{
     ViewBag.Title = "Home Page";
 }
-@if (Model.Success && (Model.Object as ModelLayer.PaginationDTO).CantidadElementos > 0)
+@if (Model.Success && (Model.Object as ModelLayer.Libro).Libros.Count > 0)
 {
     <h1 class="text-center">Bienvenidos a la tienda de Libros</h1>
     <div class="my-2 row">
         <div class="col-12">
             <div class="table-responsive table-responsive-lg">
-                <table class="table table-primary">
+                <table class="table table-primary" id="tablaInit">
                     <thead>
                         <tr>
                             <th scope="col">ISBN</th>
@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-contenido">
-                        @foreach (ModelLayer.Libro item in (Model.Object as ModelLayer.PaginationDTO).TempLibros[0])
+                        @foreach (ModelLayer.Libro item in (Model.Object as ModelLayer.Libro).Libros)
                         {
                             var result = item as ModelLayer.Libro;
                             <tr>
@@ -33,7 +33,7 @@
                                 <td class="bg-white">@result.Editorial.Nombre</td>
                                 <td class="bg-white">
                                     <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-                                        <button type="button" id="Actualizar" data-libro="@result.ISN" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-info">Editar</button>
+                                        <button type="button" id="Actualizar" onclick="actualizar" data-libro="@result.ISN" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-info">Editar</button>
                                         <button type="button" id="Eliminar" data-libro="@result.ISN" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col btn btn-danger">Eliminar</button>
                                     </div>
                                 </td>
@@ -44,25 +44,7 @@
             </div>
         </div>
         <div class="col">
-            @Html.DropDownList("SeleccionElemento", new List<SelectListItem> {
-           new SelectListItem { Value = "1", Text = "5"},
-           new SelectListItem { Value = "2", Text = "10"},
-           new SelectListItem { Value = "3", Text = "15"},
-           new SelectListItem { Value = "4", Text = "20"}
-       }, "Seleccione una opcion", new { @class = "form-control" })
-        </div>
-        <div class="col">
-            <nav aria-label="...">
-                <ul class="pagination">
-                    @for (int i = 0; i < (Model.Object as ModelLayer.PaginationDTO).CantidadTempPaginas; i++)
-                    {
-                        <li class="page-item"><a class="page-link" href="#">@(i+1)</a></li>
-                    }
-                </ul>
-            </nav>
-        </div>
-        <div class="col">
-            <button id="agregar-libro" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ingresar nueva Informacion</button>
+            <button id="Agregar" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Ingresar nueva Informacion</button>
         </div>
     </div>
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static">
@@ -116,10 +98,10 @@
                                     <div class="container overflow-hidden text-center">
                                         <div class="row g-3 justify-content-center align-items-center">
                                             <div class="col-auto">
-                                                <div class="form-floating">
-                                                    <input type="text" id="Autor" class="form-control-sm form-control" placeholder="" />
-                                                    <label>Autor</label>
-                                                </div>
+                                                <label for="Autor">Ingrese al autor</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                @Html.DropDownListFor(model => (model.Object as ModelLayer.Libro).Autor.IdAutor, new SelectList((Model.Object as ModelLayer.Libro).Autor.Autores, "IdAutor", "Nombre", "0"), "Seleccione una opcion", new {@class = "form-control", @id = "ddlAutor"})
                                             </div>
                                         </div>
                                     </div>
@@ -131,10 +113,10 @@
                                     <div class="container overflow-hidden text-center">
                                         <div class="row g-3 justify-content-center align-items-center">
                                             <div class="col-auto">
-                                                <div class="form-floating">
-                                                    <input type="text" id="Editorial" class="form-control-sm form-control" placeholder="" />
-                                                    <label>Editorial</label>
-                                                </div>
+                                                <label for="Editorial">Ingrese el editorial</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                @Html.DropDownListFor(model => (model.Object as ModelLayer.Libro).Editorial.IdEditorial, new SelectList((Model.Object as ModelLayer.Libro).Editorial.Editoriales, "IdEditorial", "Nombre", "0"), "Seleccione una opcion", new {@class = "form-control", @id = "ddlEditorial"})
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +126,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" id="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="CerrarModal">Cerrar</button>
                     <button type="submit" class="btn btn-success" id="IngresarModal">Ingresar</button>
                     <button type="submit" class="btn btn-info" id="ActualizarModal">Actualizar</button>
                 </div>

@@ -8,7 +8,7 @@ namespace LibroWeb
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -32,15 +32,6 @@ namespace LibroWeb
 
             bundles.Add(new ScriptBundle("~/function/validation").Include(
                 "~/JQuery/info.js"));
-
-            bundles.Add(new StyleBundle("~/pagination/DataTableCSS").Include(
-                "~/Content/DataTables/css/buttons.css",
-                "~/Content/DataTables/css/autoFill.css",
-                "~/Content/DataTables/css/responsive.css",
-                "~/Content/DataTables/css/datatables.css"));
-
-            bundles.Add(new ScriptBundle("~/pagination/DataTableJS").Include(
-                "~/Scripts/DataTables/datatables.js"));
         }
     }
 }

@@ -18,8 +18,6 @@ namespace LibroWeb.Controllers
     [AllowEnableCors]
     public class HomeController : Controller
     {
-        private ModelLayer.PaginationDTO paginaDTO = new ModelLayer.PaginationDTO();
-
         public ActionResult Index()
         {
             ModelLayer.ResultDTO modelDTO = new ModelLayer.ResultDTO();
@@ -29,10 +27,7 @@ namespace LibroWeb.Controllers
             modelLibro.Autor = modelAutor;
             modelLibro.Editorial = modelEditorial;
             modelDTO.Success = modelLibro.Libros.Count > 0;
-            paginaDTO.CantidadElementos = modelLibro.Libros.Count;
-            paginaDTO.SeleccionElementos = 5;
-            paginaDTO.Libros = modelLibro.Libros;
-            modelDTO.Object = paginaDTO;
+            modelDTO.Object = modelLibro;
             return View(modelDTO);
         }
 
@@ -52,14 +47,6 @@ namespace LibroWeb.Controllers
         public JsonResult ObtenerLibro(string ISBN)
         {
             return Json(GetLibros(ISBN), JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult ObtenerSeleccion(int idPagina)
-        {
-            ModelLayer.Libro objLibro = GetLibros(null);
-            paginaDTO.CantidadElementos = objLibro.Libros.Count;
-            paginaDTO.Libros = objLibro.Libros;
-            return Json(paginaDTO.TempLibros[idPagina], JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ObtenerPorTitulo(string titulo)
