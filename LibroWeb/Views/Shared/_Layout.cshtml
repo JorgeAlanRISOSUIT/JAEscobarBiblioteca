@@ -7,7 +7,6 @@
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/pagination/DataTableCSS")
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -38,7 +37,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/function/models");
     @Scripts.Render("~/function/validation")
-    @Scripts.Render("~/pagination/DataTableJS")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
